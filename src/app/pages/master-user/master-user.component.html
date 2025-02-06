@@ -1,138 +1,113 @@
 <div class="container mt-4 mb-4">
+  <!-- Add Data Button -->
+  <button class="btn btn-success mb-4 px-4 py-2 rounded-full shadow-lg hover:shadow-xl transition-all duration-300" (click)="addButton(modalAdd)">
+    Add Data
+  </button>
+
+  <!-- Modal Template for Add Data -->
   <ng-template #modalAdd let-modal>
-    <div class="modal-header">
+    <div class="modal-header bg-primary text-white">
       <h5 class="modal-title">ADD DATA</h5>
-      <button
-        type="button"
-        class="close"
-        (click)="modal.dismiss()"
-        aria-label="Close"
-      >
+      <button type="button" class="close text-white" (click)="modal.dismiss()" aria-label="Close">
         <span aria-hidden="true">&times;</span>
       </button>
     </div>
 
-    <div class="modal-body">
+    <div class="modal-body bg-gray-100 p-4 rounded-lg">
       <!-- Form masuk ke dalam bagian "FORM DATA" -->
       <form [formGroup]="addForm" (ngSubmit)="onSubmit()" autocomplete="off">
-        <div class="mb-3">
-          <label class="form-label" for="title">Title</label>
+        <div class="mb-4">
+          <label class="form-label text-sm font-medium text-gray-700" for="title">Title</label>
           <input
             type="text"
-            class="form-control"
+            class="form-control border-2 border-gray-300 p-2 rounded-md w-full"
             id="title"
             placeholder="Application Name"
             required
             formControlName="title"
             [ngClass]="{ 'is-invalid': af['title'].errors }"
           />
-          <div *ngIf="af['title'].errors" class="invalid-feedback" align="left">
+          <div *ngIf="af['title'].errors" class="invalid-feedback text-red-600 mt-2">
             <div *ngIf="af['title'].errors['required']">Title is required</div>
           </div>
         </div>
 
-        <div class="mb-3">
-          <label for="category_id" class="form-label">Category</label>
-          <select class="form-select" formControlName="category_id">
+        <div class="mb-4">
+          <label for="category_id" class="form-label text-sm font-medium text-gray-700">Category</label>
+          <select class="form-select form-control border-2 border-gray-300 p-2 rounded-md w-full" formControlName="category_id">
             <option value="" selected>Select Category</option>
-            <option *ngFor="let category of categories" [value]="category.id">
-              {{ category.category }}
-            </option>
+            <option *ngFor="let category of categories" [value]="category.id">{{ category.category }}</option>
           </select>
-          <div
-            *ngIf="af['category_id'].errors"
-            class="invalid-feedback"
-            align="left"
-          >
-            <div *ngIf="af['category_id'].errors['required']">
-              Category is required
-            </div>
+          <div *ngIf="af['category_id'].errors" class="invalid-feedback text-red-600 mt-2">
+            <div *ngIf="af['category_id'].errors['required']">Category is required</div>
           </div>
         </div>
 
-        <div class="mb-3">
-          <label class="form-label" for="description">Description</label>
+        <div class="mb-4">
+          <label class="form-label text-sm font-medium text-gray-700" for="description">Description</label>
           <input
             type="text"
-            class="form-control"
+            class="form-control border-2 border-gray-300 p-2 rounded-md w-full"
             id="description"
             formControlName="description"
           />
-          <div
-            *ngIf="af['description'].errors"
-            class="invalid-feedback"
-            align="left"
-          >
-            <div *ngIf="af['description'].errors['required']">
-              Description is required
-            </div>
+          <div *ngIf="af['description'].errors" class="invalid-feedback text-red-600 mt-2">
+            <div *ngIf="af['description'].errors['required']">Description is required</div>
           </div>
         </div>
 
-        <div class="mb-3">
-          <label class="form-label" for="progress">Progress</label>
+        <div class="mb-4">
+          <label class="form-label text-sm font-medium text-gray-700" for="progress">Progress</label>
           <input
             type="number"
-            class="form-control"
+            class="form-control border-2 border-gray-300 p-2 rounded-md w-full"
             id="progress"
             formControlName="progress"
           />
-          <div
-            *ngIf="af['progress'].errors"
-            class="invalid-feedback"
-            align="left"
-          >
-            <div *ngIf="af['progress'].errors['required']">
-              Progress is required
-            </div>
+          <div *ngIf="af['progress'].errors" class="invalid-feedback text-red-600 mt-2">
+            <div *ngIf="af['progress'].errors['required']">Progress is required</div>
           </div>
         </div>
 
-        <div class="modal-footer">
-          <button
-            type="button"
-            class="btn btn-secondary"
-            (click)="modal.dismiss()"
-          >
-            Close
-          </button>
-          <button class="btn btn-success" type="submit">Submit</button>
+        <div class="modal-footer justify-between">
+          <button type="button" class="btn btn-secondary px-6 py-2 rounded-md" (click)="modal.dismiss()">Close</button>
+          <button class="btn btn-success px-6 py-2 rounded-md" type="submit">Submit</button>
         </div>
       </form>
     </div>
   </ng-template>
 
-  <button class="btn btn-success mb-3" (click)="addButton(modalAdd)">
-    Add Data
-  </button>
+  <!-- Table Section -->
+  <div class="card shadow-lg p-4 rounded-lg">
+    <h2 class="text-xl font-semibold mb-4">User Data</h2>
+    <table mat-table [dataSource]="userData" class="table table-striped table-bordered w-full">
+      <ng-container matColumnDef="id">
+        <th mat-header-cell *matHeaderCellDef>ID</th>
+        <td mat-cell *matCellDef="let element">{{ element.id }}</td>
+      </ng-container>
 
-  <table mat-table [dataSource]="userData" class="mat-elevation-28">
-    <ng-container matColumnDef="id">
-      <th mat-header-cell *matHeaderCellDef>ID</th>
-      <td mat-cell *matCellDef="let element">{{ element.id }}</td>
-    </ng-container>
+      <ng-container matColumnDef="title">
+        <th mat-header-cell *matHeaderCellDef>Title</th>
+        <td mat-cell *matCellDef="let element">{{ element.title }}</td>
+      </ng-container>
 
-    <ng-container matColumnDef="title">
-      <th mat-header-cell *matHeaderCellDef>Title</th>
-      <td mat-cell *matCellDef="let element">{{ element.title }}</td>
-    </ng-container>
+      <ng-container matColumnDef="category_id">
+        <th mat-header-cell *matHeaderCellDef>Category</th>
+        <td mat-cell *matCellDef="let element">{{ element.category_id }}</td>
+      </ng-container>
 
-    <ng-container matColumnDef="category_id">
-      <th mat-header-cell *matHeaderCellDef>Category</th>
-      <td mat-cell *matCellDef="let element">{{ element.category_id }}</td>
-    </ng-container>
+      <ng-container matColumnDef="description">
+        <th mat-header-cell *matHeaderCellDef>Description</th>
+        <td mat-cell *matCellDef="let element">{{ element.description }}</td>
+      </ng-container>
 
-    <ng-container matColumnDef="description">
-      <th mat-header-cell *matHeaderCellDef>Description</th>
-      <td mat-cell *matCellDef="let element">{{ element.description }}</td>
-    </ng-container>
+      <ng-container matColumnDef="progress">
+        <th mat-header-cell *matHeaderCellDef>Progress</th>
+        <td mat-cell *matCellDef="let element">{{ element.progress }}</td>
+      </ng-container>
 
-    <ng-container matColumnDef="progress">
-      <th mat-header-cell *matHeaderCellDef>Progress</th>
-      <td mat-cell *matCellDef="let element">{{ element.progress }}</td>
-    </ng-container>
-
-    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
-  </table>
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    </table>
+  </div>
 </div>

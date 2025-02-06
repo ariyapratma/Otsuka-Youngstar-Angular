@@ -23,7 +23,7 @@ export interface User {
 })
 export class MasterUserComponent implements OnInit {
   userData: User[] = [];
-  categories: any[] = []; // Tambahkan properti categories untuk menyimpan data kategori
+  categories: any[] = [];
 
   displayedColumns: string[] = [
     'id',
@@ -41,11 +41,11 @@ export class MasterUserComponent implements OnInit {
 
   ngOnInit(): void {
     this.getEmployees();
-    this.getCategories(); // Ambil kategori saat komponen diinisialisasi
+    this.getCategories();
 
     this.addForm = this.formBuilder.group({
       title: [null, Validators.required],
-      category_id: [null, Validators.required], // Tambahkan validasi required
+      category_id: [null, Validators.required],
       description: [null],
       progress: [null],
     });
@@ -98,7 +98,6 @@ export class MasterUserComponent implements OnInit {
       }
     );
   }
-  
 
   addButton(content: any) {
     this.modalService.open(content, { size: 'xl', centered: true });
