@@ -13,6 +13,9 @@ export class ApiServiceService {
   getUser(): Observable<any> {
     return this.http.get(this.apiUrlLocal + '/todos', this.httpOptions);
   }
+  getCategories(): Observable<any> {
+    return this.http.get(`${this.apiUrlLocal}/todo`, this.httpOptions);
+  }
 
   createData(data: any): Observable<any> {
     return this.http.post(this.apiUrlLocal + '/todos', data, this.httpOptions);
@@ -21,7 +24,7 @@ export class ApiServiceService {
   private httpOptions = {
     headers: new HttpHeaders({
       'Content-Type': 'application/json',
-      Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImpvaG5fZG9lIiwiZW1haWwiOiJqb2huLmRvZUBleGFtcGxlLmNvbSIsImlhdCI6MTczODgyNzU0OSwiZXhwIjoxNzM4ODMxMTQ5fQ.GBrr3R3hZD1lvGVE2oKQSZpGco4xlJgkwVVd9Xxl454`,
+      Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImpvaG5fZG9lIiwiZW1haWwiOiJqb2huLmRvZUBleGFtcGxlLmNvbSIsImlhdCI6MTczODgzMjE3OSwiZXhwIjoxNzM4ODM1Nzc5fQ.zDelVUbbicIPszgnn8WCkjw6SSNdrGYguiB3dwD4P88`,
     }),
   };
 }

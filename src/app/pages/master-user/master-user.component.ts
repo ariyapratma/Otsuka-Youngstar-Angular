@@ -14,15 +14,16 @@ export interface User {
   description: string;
   progress: number;
 }
+
 @Component({
   selector: 'app-master-user',
   standalone: false,
-
   templateUrl: './master-user.component.html',
   styleUrl: './master-user.component.css',
 })
 export class MasterUserComponent implements OnInit {
   userData: User[] = [];
+  categories: any[] = []; // Tambahkan properti categories untuk menyimpan data kategori
 
   displayedColumns: string[] = [
     'id',
@@ -40,10 +41,11 @@ export class MasterUserComponent implements OnInit {
 
   ngOnInit(): void {
     this.getEmployees();
+    this.getCategories(); // Ambil kategori saat komponen diinisialisasi
 
     this.addForm = this.formBuilder.group({
       title: [null, Validators.required],
-      category_id: [null],
+      category_id: [null, Validators.required], // Tambahkan validasi required
       description: [null],
       progress: [null],
     });
@@ -80,6 +82,24 @@ export class MasterUserComponent implements OnInit {
       }
     );
   }
+
+  private getCategories() {
+    this.restApiService.getCategories().subscribe(
+      (data: any) => {
+        if (data && Array.isArray(data.data)) {
+          this.categories = data.data.map((category: any) => ({
+            id: category.id,
+            category: category.category,
+          }));
+        }
+      },
+      (error) => {
+        console.error('Error fetching categories:', error);
+      }
+    );
+  }
+  
+
   addButton(content: any) {
     this.modalService.open(content, { size: 'xl', centered: true });
   }
