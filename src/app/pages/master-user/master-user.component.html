@@ -1,0 +1,124 @@
+<div class="container mt-4 mb-4">
+  <!-- Add Data Button -->
+  <button class="btn btn-success mb-3" (click)="addButton(modalAdd)">
+    Add Data
+  </button>
+
+  <!-- Modal Template for Add Data -->
+  <ng-template #modalAdd let-modal>
+    <div class="modal-header">
+      <h5 class="modal-title">ADD DATA</h5>
+      <button type="button" class="close" aria-label="Close" (click)="modal.close()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <form [formGroup]="addForm" (ngSubmit)="onSubmit()">
+        <!-- Title Field -->
+        <div class="mb-3">
+          <label class="form-label" for="title">Title</label>
+          <input
+            type="text"
+            class="form-control"
+            id="title"
+            placeholder="Application Name"
+            required
+            formControlName="title"
+            [ngClass]="{ 'is-invalid': addForm.get('title')?.errors }"
+          />
+          <div *ngIf="addForm.get('title')?.errors" class="invalid-feedback" align="left">
+            <div *ngIf="addForm.get('title')?.errors?.['required']">Title is required</div>
+          </div>
+        </div>
+
+        <!-- Category Dropdown -->
+        <div class="mb-3">
+          <label for="category_id" class="form-label">Category</label>
+          <select class="form-select" aria-label="Default select example" formControlName="category_id">
+            <option value="" disabled selected>Select Category</option>
+            <option value="5">General</option>
+          </select>
+          <div *ngIf="addForm.get('category_id')?.errors" class="invalid-feedback" align="left">
+            <div *ngIf="addForm.get('category_id')?.errors?.['required']">Category is required</div>
+          </div>
+        </div>
+
+        <!-- Description Field -->
+        <div class="mb-3">
+          <label class="form-label" for="description">Description</label>
+          <input
+            type="text"
+            class="form-control"
+            id="description"
+            formControlName="description"
+            placeholder="Description"
+          />
+          <div *ngIf="addForm.get('description')?.errors" class="invalid-feedback" align="left">
+            <div *ngIf="addForm.get('description')?.errors?.['required']">Description is required</div>
+          </div>
+        </div>
+
+        <!-- Progress Field -->
+        <div class="mb-3">
+          <label class="form-label" for="progress">Progress</label>
+          <input
+            type="number"
+            class="form-control"
+            id="progress"
+            formControlName="progress"
+            placeholder="Progress"
+          />
+          <div *ngIf="addForm.get('progress')?.errors" class="invalid-feedback" align="left">
+            <div *ngIf="addForm.get('progress')?.errors?.['required']">Progress is required</div>
+          </div>
+        </div>
+
+        <!-- Submit Button -->
+        <button type="submit" class="btn btn-primary" [disabled]="addForm.invalid">Submit</button>
+      </form>
+    </div>
+  </ng-template>
+
+  <!-- Table Section -->
+  <table mat-table [dataSource]="userData" class="mat-elevation-28">
+    <!-- ID Column -->
+    <ng-container matColumnDef="id">
+      <th mat-header-cell *matHeaderCellDef>ID</th>
+      <td mat-cell *matCellDef="let element">{{ element.id }}</td>
+    </ng-container>
+
+    <!-- Title Column -->
+    <ng-container matColumnDef="title">
+      <th mat-header-cell *matHeaderCellDef>Title</th>
+      <td mat-cell *matCellDef="let element">{{ element.title }}</td>
+    </ng-container>
+
+    <!-- Category Column -->
+    <ng-container matColumnDef="category_id">
+      <th mat-header-cell *matHeaderCellDef>Category</th>
+      <td mat-cell *matCellDef="let element">{{ element.category_id }}</td>
+    </ng-container>
+
+    <!-- Description Column -->
+    <ng-container matColumnDef="description">
+      <th mat-header-cell *matHeaderCellDef>Description</th>
+      <td mat-cell *matCellDef="let element">{{ element.description }}</td>
+    </ng-container>
+
+    <!-- Progress Column -->
+    <ng-container matColumnDef="progress">
+      <th mat-header-cell *matHeaderCellDef>Progress</th>
+      <td mat-cell *matCellDef="let element">{{ element.progress }}</td>
+    </ng-container>
+
+    <!-- Created By Column -->
+    <ng-container matColumnDef="created_by">
+      <th mat-header-cell *matHeaderCellDef>Created By</th>
+      <td mat-cell *matCellDef="let element">{{ element.created_by }}</td>
+    </ng-container>
+
+    <!-- Table Header and Rows -->
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+  </table>
+</div>
