@@ -1,6 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import {
+  UntypedFormBuilder,
+  UntypedFormGroup,
+  Validators,
+} from '@angular/forms';
 import { ApiServiceService } from '../../../services/api-service.service';
 
 export interface User {
@@ -82,15 +86,17 @@ export class MasterEditUserComponent implements OnInit {
     this.editForm.markAllAsTouched();
 
     if (this.editForm.valid) {
-      this.restApiService.updateUser(this.userId, this.editForm.value).subscribe({
-        next: () => {
-          console.log('User updated successfully');
-          this.router.navigate(['/pages/master-user']);
-        },
-        error: (error) => {
-          console.error('Error updating user:', error);
-        },
-      });
+      this.restApiService
+        .updateUser(this.userId, this.editForm.value)
+        .subscribe({
+          next: () => {
+            console.log('User updated successfully');
+            this.router.navigate(['/pages/master-user']);
+          },
+          error: (error) => {
+            console.error('Error updating user:', error);
+          },
+        });
     }
   }
 }
