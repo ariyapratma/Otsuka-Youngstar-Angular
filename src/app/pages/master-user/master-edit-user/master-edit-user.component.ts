@@ -12,10 +12,9 @@ import { ApiServiceService } from '../../../services/api-service.service';
 
 @Component({
   selector: 'app-master-edit-user',
-  standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  standalone: false,
   templateUrl: './master-edit-user.component.html',
-  styleUrls: ['./master-edit-user.component.css'],
+  styleUrl: './master-edit-user.component.css',
 })
 export class MasterEditUserComponent implements OnInit {
   userData: any = {};
@@ -75,17 +74,6 @@ export class MasterEditUserComponent implements OnInit {
     this.restApiService.getCategories().subscribe((data: any) => {
       this.categories = data;
     });
-  }
-
-  editButton(element: any) {
-    this.editForm.patchValue({
-      title: element.title,
-      category_id: element.category_id,
-      description: element.description,
-      progress: element.progress,
-    });
-
-    this.modalService.open(this.modalEdit, { centered: true });
   }
 
   onSubmit() {

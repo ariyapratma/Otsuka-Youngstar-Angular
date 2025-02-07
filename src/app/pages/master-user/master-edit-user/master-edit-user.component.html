@@ -1,54 +1,87 @@
 <div class="container mt-4 mb-4">
-  <h3>Edit Data</h3>
-
-  <form [formGroup]="editForm" (ngSubmit)="onSubmit()">
+  <h3 class="h4 mb-4">Edit Data</h3>
+  <form [formGroup]="editForm" (ngSubmit)="onSubmit()" autocomplete="off">
     <!-- Title Field -->
     <div class="mb-3">
       <label for="title" class="form-label">Title</label>
       <input
         type="text"
         class="form-control"
+        id="title"
         formControlName="title"
         placeholder="Enter Title"
         required
+        [ngClass]="{
+          'is-invalid':
+            editForm.get('title')?.invalid && editForm.get('title')?.touched
+        }"
       />
+      <div
+        *ngIf="editForm.get('title')?.invalid && editForm.get('title')?.touched"
+        class="invalid-feedback"
+      >
+        Title is required.
+      </div>
     </div>
-
     <!-- Category Dropdown -->
     <div class="mb-3">
       <label for="category_id" class="form-label">Category</label>
-      <select class="form-select" formControlName="category_id">
+      <select
+        class="form-select"
+        id="category_id"
+        formControlName="category_id"
+        [ngClass]="{
+          'is-invalid':
+            editForm.get('category_id')?.invalid &&
+            editForm.get('category_id')?.touched
+        }"
+      >
         <option value="" selected>Select Category</option>
         <option *ngFor="let category of categories" [value]="category.id">
           {{ category.category }}
         </option>
       </select>
+      <div
+        *ngIf="
+          editForm.get('category_id')?.invalid &&
+          editForm.get('category_id')?.touched
+        "
+        class="invalid-feedback"
+      >
+        Category is required.
+      </div>
     </div>
-
     <!-- Description Field -->
     <div class="mb-3">
       <label for="description" class="form-label">Description</label>
       <input
         type="text"
         class="form-control"
+        id="description"
         formControlName="description"
         placeholder="Enter Description"
       />
     </div>
-
     <!-- Progress Field -->
     <div class="mb-3">
       <label for="progress" class="form-label">Progress</label>
       <input
         type="number"
         class="form-control"
+        id="progress"
         formControlName="progress"
         placeholder="Enter Progress"
       />
     </div>
-
-    <button type="submit" class="btn btn-success" [disabled]="editForm.invalid">
-      Update Data
-    </button>
+    <!-- Submit Button -->
+    <div class="d-flex justify-content-end">
+      <button
+        type="submit"
+        class="btn btn-primary px-4 py-2 rounded-pill"
+        [disabled]="editForm.invalid"
+      >
+        Update Data
+      </button>
+    </div>
   </form>
 </div>

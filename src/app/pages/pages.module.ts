@@ -6,9 +6,10 @@ import { NgSelectModule } from '@ng-select/ng-select';
 
 import { PagesRoutingModule } from './pages-routing.module';
 import { MasterUserComponent } from './master-user/master-user.component';
+import { MasterEditUserComponent } from './master-user/master-edit-user/master-edit-user.component';
 
 @NgModule({
-  declarations: [MasterUserComponent],
+  declarations: [MasterUserComponent, MasterEditUserComponent],
   imports: [
     CommonModule,
     PagesRoutingModule,

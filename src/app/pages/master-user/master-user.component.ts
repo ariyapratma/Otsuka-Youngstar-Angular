@@ -7,6 +7,8 @@ import {
   Validators,
 } from '@angular/forms';
 
+import { Router } from '@angular/router';
+
 export interface User {
   id: number;
   title: string;
@@ -36,7 +38,8 @@ export class MasterUserComponent implements OnInit {
   constructor(
     private restApiService: ApiServiceService,
     private modalService: NgbModal,
-    private formBuilder: UntypedFormBuilder
+    private formBuilder: UntypedFormBuilder,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -49,17 +52,30 @@ export class MasterUserComponent implements OnInit {
       description: [null],
       progress: [null],
     });
+
+    this.editForm = this.formBuilder.group({
+      id: [null],
+      title: [null, Validators.required],
+      category_id: [null, Validators.required],
+      description: [null],
+      progress: [null],
+    });
   }
 
-  editButton(element: any) {
-    this.editForm.patchValue({
-      title: element.title,
-      category_id: element.category_id,
-      description: element.description,
-      progress: element.progress,
-    });
+  get af() {
+    return this.addForm.controls;
+  }
 
-    this.modalService.open(this.modalEdit, { centered: true });
+  addButton(content: any) {
+    this.modalService.open(content, { size: 'xl', centered: true });
+  }
+
+  addForm!: UntypedFormGroup;
+  editForm!: UntypedFormGroup;
+  modalEdit: any;
+
+  editButton(element: number) {
+    this.router.navigate(['/pages/master-user/master-edit-user', element]);
   }
 
   onSubmit() {
@@ -108,17 +124,5 @@ export class MasterUserComponent implements OnInit {
         console.error('Error fetching categories:', error);
       }
     );
-  }
-
-  addButton(content: any) {
-    this.modalService.open(content, { size: 'xl', centered: true });
-  }
-
-  addForm!: UntypedFormGroup;
-  editForm!: UntypedFormGroup;
-  modalEdit: any;
-
-  get af() {
-    return this.addForm.controls;
   }
 }
