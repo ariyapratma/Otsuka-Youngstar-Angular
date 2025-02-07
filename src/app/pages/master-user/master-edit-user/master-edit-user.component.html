@@ -1,0 +1,54 @@
+<div class="container mt-4 mb-4">
+  <h3>Edit Data</h3>
+
+  <form [formGroup]="editForm" (ngSubmit)="onSubmit()">
+    <!-- Title Field -->
+    <div class="mb-3">
+      <label for="title" class="form-label">Title</label>
+      <input
+        type="text"
+        class="form-control"
+        formControlName="title"
+        placeholder="Enter Title"
+        required
+      />
+    </div>
+
+    <!-- Category Dropdown -->
+    <div class="mb-3">
+      <label for="category_id" class="form-label">Category</label>
+      <select class="form-select" formControlName="category_id">
+        <option value="" selected>Select Category</option>
+        <option *ngFor="let category of categories" [value]="category.id">
+          {{ category.category }}
+        </option>
+      </select>
+    </div>
+
+    <!-- Description Field -->
+    <div class="mb-3">
+      <label for="description" class="form-label">Description</label>
+      <input
+        type="text"
+        class="form-control"
+        formControlName="description"
+        placeholder="Enter Description"
+      />
+    </div>
+
+    <!-- Progress Field -->
+    <div class="mb-3">
+      <label for="progress" class="form-label">Progress</label>
+      <input
+        type="number"
+        class="form-control"
+        formControlName="progress"
+        placeholder="Enter Progress"
+      />
+    </div>
+
+    <button type="submit" class="btn btn-success" [disabled]="editForm.invalid">
+      Update Data
+    </button>
+  </form>
+</div>

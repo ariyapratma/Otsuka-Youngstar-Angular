@@ -51,6 +51,17 @@ export class MasterUserComponent implements OnInit {
     });
   }
 
+  editButton(element: any) {
+    this.editForm.patchValue({
+      title: element.title,
+      category_id: element.category_id,
+      description: element.description,
+      progress: element.progress,
+    });
+
+    this.modalService.open(this.modalEdit, { centered: true });
+  }
+
   onSubmit() {
     this.addForm.markAllAsTouched();
 
@@ -104,6 +115,9 @@ export class MasterUserComponent implements OnInit {
   }
 
   addForm!: UntypedFormGroup;
+  editForm!: UntypedFormGroup;
+  modalEdit: any;
+
   get af() {
     return this.addForm.controls;
   }
