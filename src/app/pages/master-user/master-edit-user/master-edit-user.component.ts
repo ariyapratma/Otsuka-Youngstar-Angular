@@ -1,14 +1,15 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import {
-  FormBuilder,
-  FormGroup,
-  Validators,
-  ReactiveFormsModule,
-} from '@angular/forms';
-import { CommonModule } from '@angular/common';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ActivatedRoute, Router } from '@angular/router';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { ApiServiceService } from '../../../services/api-service.service';
+
+export interface User {
+  id: number;
+  title: string;
+  description: string;
+  category_id: number;
+  progress: number;
+}
 
 @Component({
   selector: 'app-master-edit-user',
@@ -17,80 +18,79 @@ import { ApiServiceService } from '../../../services/api-service.service';
   styleUrl: './master-edit-user.component.css',
 })
 export class MasterEditUserComponent implements OnInit {
-  userData: any = {};
-  editForm: FormGroup;
+  editForm!: UntypedFormGroup;
+  userId!: number;
   categories: any[] = [];
-  modalEdit: any;
-
-  displayedColumns: string[] = [
-    'id',
-    'title',
-    'category_id',
-    'description',
-    'progress',
-    'actions',
-  ];
 
   constructor(
     private route: ActivatedRoute,
     private restApiService: ApiServiceService,
-    private formBuilder: FormBuilder,
-    private modalService: NgbModal
-  ) {
-    this.editForm = this.formBuilder.group({
-      title: [null, Validators.required],
-      category_id: [null, Validators.required],
-      description: [null, Validators.required],
-      progress: [
-        null,
-        [Validators.required, Validators.min(0), Validators.max(100)],
-      ],
-    });
-  }
+    private formBuilder: UntypedFormBuilder,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
-    const id = this.route.snapshot.paramMap.get('id');
-    if (id) {
-      this.getUserData(id);
-    }
+    this.userId = Number(this.route.snapshot.paramMap.get('id'));
+
+    this.editForm = this.formBuilder.group({
+      title: ['', [Validators.required]],
+      category_id: [null, [Validators.required]],
+      description: ['', [Validators.required]],
+      progress: [null, [Validators.required]],
+    });
+
+    this.getUserById(this.userId);
     this.getCategories();
   }
 
-  getUserData(id: string) {
-    this.restApiService.getUserById(id).subscribe((data: any) => {
-      if (data) {
-        this.userData = data;
-        this.editForm.patchValue({
-          title: this.userData.title,
-          category_id: this.userData.category_id,
-          description: this.userData.description,
-          progress: this.userData.progress,
-        });
-      }
-    });
-  }
-
-  getCategories() {
-    this.restApiService.getCategories().subscribe((data: any) => {
-      this.categories = data;
-    });
-  }
-
-  onSubmit() {
-    if (this.editForm.valid) {
-      const formData = {
-        ...this.editForm.value,
-        category_id: Number(this.editForm.value.category_id),
-      };
-
-      this.restApiService.updateData(this.userData.id, formData).subscribe(
-        () => {
-          this.modalService.dismissAll();
-        },
-        (error) => {
-          console.error('Error updating data:', error);
+  // Ambil data user berdasarkan ID
+  private getUserById(id: number): void {
+    this.restApiService.getUserById(id).subscribe({
+      next: (response) => {
+        if (response && response.data) {
+          setTimeout(() => {
+            this.editForm.patchValue(response.data);
+            console.log('Form Updated with:', this.editForm.value);
+          });
+        } else {
+          console.error('Invalid response format:', response);
         }
-      );
+      },
+      error: (error) => {
+        console.error('Error fetching user:', error);
+      },
+    });
+  }
+
+  private getCategories(): void {
+    this.restApiService.getCategories().subscribe(
+      (data: any) => {
+        if (data && Array.isArray(data.data)) {
+          this.categories = data.data.map((category: any) => ({
+            id: category.id,
+            category: category.category,
+          }));
+        }
+      },
+      (error) => {
+        console.error('Error fetching categories:', error);
+      }
+    );
+  }
+
+  onSubmitEdit(): void {
+    this.editForm.markAllAsTouched();
+
+    if (this.editForm.valid) {
+      this.restApiService.updateUser(this.userId, this.editForm.value).subscribe({
+        next: () => {
+          console.log('User updated successfully');
+          this.router.navigate(['/pages/master-user']);
+        },
+        error: (error) => {
+          console.error('Error updating user:', error);
+        },
+      });
     }
   }
 }
