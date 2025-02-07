@@ -78,6 +78,20 @@ export class MasterUserComponent implements OnInit {
     this.router.navigate(['/pages/master-user/master-edit-user', element]);
   }
 
+  onDeleteUser(id: number): void {
+    if (confirm('Are you sure you want to delete this user?')) {
+      this.restApiService.deleteUser(id).subscribe({
+        next: () => {
+          console.log(`User with ID ${id} deleted successfully.`);
+          this.getEmployees();
+        },
+        error: (error) => {
+          console.error('Error deleting user:', error);
+        },
+      });
+    }
+  }
+
   onSubmit() {
     this.addForm.markAllAsTouched();
 
