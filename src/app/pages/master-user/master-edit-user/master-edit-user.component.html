@@ -1,87 +1,138 @@
-<div class="container mt-4 mb-4">
-  <h3 class="h4 mb-4">Edit Data</h3>
-  <form [formGroup]="editForm" (ngSubmit)="onSubmit()" autocomplete="off">
-    <!-- Title Field -->
-    <div class="mb-3">
-      <label for="title" class="form-label">Title</label>
-      <input
-        type="text"
-        class="form-control"
-        id="title"
-        formControlName="title"
-        placeholder="Enter Title"
-        required
-        [ngClass]="{
-          'is-invalid':
+<ng-template #modalEdit let-modal>
+  <div class="modal-header bg-primary text-white p-4 rounded-top">
+    <h5 class="modal-title">EDIT DATA</h5>
+    <button
+      type="button"
+      class="btn-close btn-close-white"
+      (click)="modal.dismiss()"
+      aria-label="Close"
+    ></button>
+  </div>
+  <div class="modal-body bg-white p-4 rounded-bottom">
+    <!-- Form Edit Data -->
+    <form [formGroup]="editForm" (ngSubmit)="onSubmit()" autocomplete="off">
+      <!-- Title Field -->
+      <div class="mb-3">
+        <label for="title" class="form-label">Title</label>
+        <input
+          type="text"
+          class="form-control"
+          id="title"
+          formControlName="title"
+          placeholder="Enter Title"
+          required
+          [ngClass]="{
+            'is-invalid':
+              editForm.get('title')?.invalid && editForm.get('title')?.touched
+          }"
+        />
+        <div
+          *ngIf="
             editForm.get('title')?.invalid && editForm.get('title')?.touched
-        }"
-      />
-      <div
-        *ngIf="editForm.get('title')?.invalid && editForm.get('title')?.touched"
-        class="invalid-feedback"
-      >
-        Title is required.
+          "
+          class="invalid-feedback"
+        >
+          Title is required.
+        </div>
       </div>
-    </div>
-    <!-- Category Dropdown -->
-    <div class="mb-3">
-      <label for="category_id" class="form-label">Category</label>
-      <select
-        class="form-select"
-        id="category_id"
-        formControlName="category_id"
-        [ngClass]="{
-          'is-invalid':
+
+      <!-- Category Dropdown -->
+      <div class="mb-3">
+        <label for="category_id" class="form-label">Category</label>
+        <select
+          class="form-select"
+          id="category_id"
+          formControlName="category_id"
+          [ngClass]="{
+            'is-invalid':
+              editForm.get('category_id')?.invalid &&
+              editForm.get('category_id')?.touched
+          }"
+        >
+          <option value="" selected>Select Category</option>
+          <option *ngFor="let category of categories" [value]="category.id">
+            {{ category.category }}
+          </option>
+        </select>
+        <div
+          *ngIf="
             editForm.get('category_id')?.invalid &&
             editForm.get('category_id')?.touched
-        }"
-      >
-        <option value="" selected>Select Category</option>
-        <option *ngFor="let category of categories" [value]="category.id">
-          {{ category.category }}
-        </option>
-      </select>
-      <div
-        *ngIf="
-          editForm.get('category_id')?.invalid &&
-          editForm.get('category_id')?.touched
-        "
-        class="invalid-feedback"
-      >
-        Category is required.
+          "
+          class="invalid-feedback"
+        >
+          Category is required.
+        </div>
       </div>
-    </div>
-    <!-- Description Field -->
-    <div class="mb-3">
-      <label for="description" class="form-label">Description</label>
-      <input
-        type="text"
-        class="form-control"
-        id="description"
-        formControlName="description"
-        placeholder="Enter Description"
-      />
-    </div>
-    <!-- Progress Field -->
-    <div class="mb-3">
-      <label for="progress" class="form-label">Progress</label>
-      <input
-        type="number"
-        class="form-control"
-        id="progress"
-        formControlName="progress"
-        placeholder="Enter Progress"
-      />
-    </div>
-    <!-- Submit Button -->
-    <div class="d-flex justify-content-end">
-      <button
-        type="submit"
-        class="btn btn-primary px-4 py-2 rounded-pill"
-        [disabled]="editForm.invalid"
-      >
-        Update Data
-      </button>
-    </div>
-  </form>
-</div>
+
+      <!-- Description Field -->
+      <div class="mb-3">
+        <label for="description" class="form-label">Description</label>
+        <input
+          type="text"
+          class="form-control"
+          id="description"
+          formControlName="description"
+          placeholder="Enter Description"
+          [ngClass]="{
+            'is-invalid':
+              editForm.get('description')?.invalid &&
+              editForm.get('description')?.touched
+          }"
+        />
+        <div
+          *ngIf="
+            editForm.get('description')?.invalid &&
+            editForm.get('description')?.touched
+          "
+          class="invalid-feedback"
+        >
+          Description is required.
+        </div>
+      </div>
+
+      <!-- Progress Field -->
+      <div class="mb-3">
+        <label for="progress" class="form-label">Progress</label>
+        <input
+          type="number"
+          class="form-control"
+          id="progress"
+          formControlName="progress"
+          placeholder="Enter Progress"
+          [ngClass]="{
+            'is-invalid':
+              editForm.get('progress')?.invalid &&
+              editForm.get('progress')?.touched
+          }"
+        />
+        <div
+          *ngIf="
+            editForm.get('progress')?.invalid && editForm.get('progress')?.touched
+          "
+          class="invalid-feedback"
+        >
+          Progress is required.
+        </div>
+      </div>
+
+      <!-- Submit Button -->
+      <div class="d-flex justify-content-between mt-4">
+        <button
+          type="button"
+          class="btn btn-secondary px-4 py-2 rounded-pill"
+          (click)="modal.dismiss()"
+        >
+          Close
+        </button>
+        <button
+          type="submit"
+          class="btn btn-primary px-4 py-2 rounded-pill"
+          [disabled]="editForm.invalid"
+        >
+          Update Data
+        </button>
+      </div>
+    </form>
+  </div>
+</ng-template>

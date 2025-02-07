@@ -23,13 +23,13 @@ export class ApiServiceService {
       this.httpOptions
     );
   }
-  
-  updateData(id: string, data: any) {
-    return this.http.put(`${this.apiUrlLocal}/todos/${id}`, data);
-  }
 
   createData(data: any): Observable<any> {
     return this.http.post(this.apiUrlLocal + '/todos', data, this.httpOptions);
+  }
+
+  updateData(id: string, data: any) {
+    return this.http.put(`${this.apiUrlLocal}/todos/${id}`, data);
   }
 
   private httpOptions = {
