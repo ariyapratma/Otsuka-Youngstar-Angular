@@ -1,16 +1,29 @@
 .navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   padding: 12px 0;
+  width: 100%;
+  transition: all 0.3s ease-in-out;
 }
 
 .navbar-brand img {
   height: 40px;
 }
 
+.navbar-nav {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
 .nav-link {
   font-size: 1rem;
-  font-weight: 300;
+  font-weight: 400;
   color: #6c757d;
   transition: color 0.3s ease-in-out;
+  white-space: nowrap;
+  padding: 8px 12px;
 }
 
 .nav-link:hover {
@@ -25,4 +38,16 @@
 
 .navbar-toggler-icon {
   filter: invert(30%);
+}
+
+@media (max-width: 768px) {
+  .navbar-nav {
+    flex-direction: column;
+    align-items: start;
+  }
+
+  .nav-link {
+    width: 100%;
+    text-align: left;
+  }
 }
