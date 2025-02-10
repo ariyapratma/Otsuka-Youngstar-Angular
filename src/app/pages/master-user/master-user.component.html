@@ -6,6 +6,7 @@
   >
     Add Data
   </button>
+
   <!-- Modal Template for Add Data -->
   <ng-template #modalAdd let-modal>
     <div class="modal-header bg-primary text-white p-4 rounded-top">
@@ -31,7 +32,11 @@
             formControlName="title"
             [ngClass]="{ 'is-invalid': af['title'].errors }"
           />
-          <div *ngIf="af['title'].errors" class="invalid-feedback">
+
+          <div
+            *ngIf="af['title'].touched && af['title'].errors"
+            class="invalid-feedback"
+          >
             Title is required
           </div>
         </div>
@@ -47,7 +52,10 @@
               {{ category.category }}
             </option>
           </select>
-          <div *ngIf="af['category_id'].errors" class="invalid-feedback">
+          <div
+            *ngIf="af['category_id'].touched && af['category_id'].errors"
+            class="invalid-feedback"
+          >
             Category is required
           </div>
         </div>
@@ -62,7 +70,10 @@
             formControlName="description"
             [ngClass]="{ 'is-invalid': af['description'].errors }"
           />
-          <div *ngIf="af['description'].errors" class="invalid-feedback">
+          <div
+            *ngIf="af['description'].touched && af['description'].errors"
+            class="invalid-feedback"
+          >
             Description is required
           </div>
         </div>
@@ -77,7 +88,10 @@
             formControlName="progress"
             [ngClass]="{ 'is-invalid': af['progress'].errors }"
           />
-          <div *ngIf="af['progress'].errors" class="invalid-feedback">
+          <div
+            *ngIf="af['progress'].touched && af['progress'].errors"
+            class="invalid-feedback"
+          >
             Progress is required
           </div>
         </div>
@@ -96,6 +110,7 @@
       </form>
     </div>
   </ng-template>
+
   <!-- Table Section -->
   <div class="card shadow-sm p-4 rounded">
     <h2 class="h4 mb-4">User Data</h2>
@@ -116,14 +131,39 @@
           <td>{{ element.title }}</td>
           <td>{{ element.category_id }}</td>
           <td>{{ element.description }}</td>
-          <td>{{ element.progress }}</td>
-          <td>          
-            <button class="btn btn-warning btn-sm me-2" (click)="editButton(element.id)">
+          <td>
+            <!-- Progress Bar -->
+            <div class="progress" style="height: 20px">
+              <div
+                class="progress-bar"
+                [ngClass]="{
+                  'bg-danger': element.progress <= 30,
+                  'bg-warning': element.progress > 30 && element.progress <= 70,
+                  'bg-success': element.progress > 70
+                }"
+                role="progressbar"
+                [style.width.%]="element.progress"
+                [attr.aria-valuenow]="element.progress"
+                aria-valuemin="0"
+                aria-valuemax="100"
+              >
+                {{ element.progress }}%
+              </div>
+            </div>
+          </td>
+          <td>
+            <button
+              class="btn btn-warning btn-sm me-2"
+              (click)="editButton(element.id)"
+            >
               <i class="bi bi-pencil"></i> Edit
             </button>
-            <button class="btn btn-danger btn-sm" (click)="onDeleteUser(element.id)">
+            <button
+              class="btn btn-danger btn-sm"
+              (click)="onDeleteUser(element.id)"
+            >
               <i class="bi bi-trash"></i> Delete
-            </button>  
+            </button>
           </td>
         </tr>
       </tbody>

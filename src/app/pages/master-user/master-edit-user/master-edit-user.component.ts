@@ -6,6 +6,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { ApiServiceService } from '../../../services/api-service.service';
+import Swal from 'sweetalert2';
 
 export interface User {
   id: number;
@@ -47,7 +48,42 @@ export class MasterEditUserComponent implements OnInit {
     this.getCategories();
   }
 
-  // Ambil data user berdasarkan ID
+  onSubmitEdit(): void {
+    this.editForm.markAllAsTouched();
+
+    if (this.editForm.valid) {
+      Swal.fire({
+        title: 'Are you sure?',
+        text: 'Do you want to save these changes?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, save it!',
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.restApiService
+            .updateUser(this.userId, this.editForm.value)
+            .subscribe({
+              next: () => {
+                Swal.fire(
+                  'Success!',
+                  'User updated successfully.',
+                  'success'
+                ).then(() => {
+                  this.router.navigate(['/pages/master-user']);
+                });
+              },
+              error: (error) => {
+                Swal.fire('Error!', 'Failed to update user.', 'error');
+                console.error('Error updating user:', error);
+              },
+            });
+        }
+      });
+    }
+  }
+
   private getUserById(id: number): void {
     this.restApiService.getUserById(id).subscribe({
       next: (response) => {
@@ -80,23 +116,5 @@ export class MasterEditUserComponent implements OnInit {
         console.error('Error fetching categories:', error);
       }
     );
-  }
-
-  onSubmitEdit(): void {
-    this.editForm.markAllAsTouched();
-
-    if (this.editForm.valid) {
-      this.restApiService
-        .updateUser(this.userId, this.editForm.value)
-        .subscribe({
-          next: () => {
-            console.log('User updated successfully');
-            this.router.navigate(['/pages/master-user']);
-          },
-          error: (error) => {
-            console.error('Error updating user:', error);
-          },
-        });
-    }
   }
 }

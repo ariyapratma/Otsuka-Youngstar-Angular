@@ -1,0 +1,16 @@
+footer {
+  padding: 20px 0;
+}
+
+footer img {
+  max-height: 50px;
+}
+
+footer p {
+  font-size: 0.9rem;
+  color: #6c757d;
+}
+
+hr {
+  border-color: #dee2e6;
+}

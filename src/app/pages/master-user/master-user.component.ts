@@ -6,8 +6,8 @@ import {
   UntypedFormGroup,
   Validators,
 } from '@angular/forms';
-
 import { Router } from '@angular/router';
+import Swal from 'sweetalert2';
 
 export interface User {
   id: number;
@@ -35,32 +35,34 @@ export class MasterUserComponent implements OnInit {
     'progress',
   ];
 
+  ngOnInit(): void {
+    this.getEmployees();
+    this.getCategories();
+
+    setTimeout(() => {
+      this.addForm = this.formBuilder.group({
+        title: [null, Validators.required],
+        category_id: [null, Validators.required],
+        description: [null],
+        progress: [null],
+      });
+
+      this.editForm = this.formBuilder.group({
+        id: [null],
+        title: [null, Validators.required],
+        category_id: [null, Validators.required],
+        description: [null],
+        progress: [null],
+      });
+    });
+  }
+
   constructor(
     private restApiService: ApiServiceService,
     private modalService: NgbModal,
     private formBuilder: UntypedFormBuilder,
     private router: Router
   ) {}
-
-  ngOnInit(): void {
-    this.getEmployees();
-    this.getCategories();
-
-    this.addForm = this.formBuilder.group({
-      title: [null, Validators.required],
-      category_id: [null, Validators.required],
-      description: [null],
-      progress: [null],
-    });
-
-    this.editForm = this.formBuilder.group({
-      id: [null],
-      title: [null, Validators.required],
-      category_id: [null, Validators.required],
-      description: [null],
-      progress: [null],
-    });
-  }
 
   get af() {
     return this.addForm.controls;
@@ -79,36 +81,47 @@ export class MasterUserComponent implements OnInit {
   }
 
   onDeleteUser(id: number): void {
-    if (confirm('Are you sure you want to delete this user?')) {
-      this.restApiService.deleteUser(id).subscribe({
-        next: () => {
-          console.log(`User with ID ${id} deleted successfully.`);
-          this.getEmployees();
-        },
-        error: (error) => {
-          console.error('Error deleting user:', error);
-        },
-      });
-    }
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'You will not be able to recover this user!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#3085d6',
+      confirmButtonText: 'Yes, delete it!',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.restApiService.deleteUser(id).subscribe({
+          next: () => {
+            Swal.fire('Deleted!', 'User has been deleted.', 'success');
+            this.getEmployees();
+          },
+          error: (error) => {
+            Swal.fire('Error!', 'Failed to delete user.', 'error');
+            console.error('Error deleting user:', error);
+          },
+        });
+      }
+    });
   }
 
   onSubmit() {
     this.addForm.markAllAsTouched();
-
     if (this.addForm.valid) {
       const formData = { ...this.addForm.value };
       formData.category_id = parseInt(formData.category_id, 10);
 
-      console.log('Submitting Form:', formData);
-      this.restApiService.createData(formData).subscribe(
-        (data: any) => {
+      this.restApiService.createData(formData).subscribe({
+        next: () => {
           this.modalService.dismissAll();
+          Swal.fire('Success!', 'User added successfully.', 'success');
           this.ngOnInit();
         },
-        (error) => {
+        error: (error) => {
+          Swal.fire('Error!', 'Failed to add user.', 'error');
           console.error('Error submitting data:', error);
-        }
-      );
+        },
+      });
     }
   }
 
