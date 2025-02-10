@@ -7,9 +7,10 @@ import { NgApexchartsModule } from 'ng-apexcharts';
 import { PagesRoutingModule } from './pages-routing.module';
 import { MasterUserComponent } from './master-user/master-user.component';
 import { MasterEditUserComponent } from './master-user/master-edit-user/master-edit-user.component';
+import { DashboardComponent } from './dashboard/dashboard.component';
 
 @NgModule({
-  declarations: [MasterUserComponent, MasterEditUserComponent],
+  declarations: [MasterUserComponent, MasterEditUserComponent, DashboardComponent],
   imports: [
     CommonModule,
     PagesRoutingModule,
