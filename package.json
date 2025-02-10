@@ -23,6 +23,7 @@
     "@ng-bootstrap/ng-bootstrap": "^18.0.0",
     "@ng-select/ng-select": "^14.2.0",
     "bootstrap": "^5.3.3",
+    "bootstrap-icons": "^1.11.3",
     "rxjs": "~7.8.0",
     "sweetalert2": "^11.16.0",
     "tslib": "^2.3.0",
