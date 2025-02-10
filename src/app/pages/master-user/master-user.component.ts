@@ -8,6 +8,7 @@ import {
 } from '@angular/forms';
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
+import { Title } from '@angular/platform-browser';
 
 export interface User {
   id: number;
@@ -38,6 +39,7 @@ export class MasterUserComponent implements OnInit {
   ngOnInit(): void {
     this.getEmployees();
     this.getCategories();
+    this.titleService.setTitle('Otsuka Youngstar - Master User');
 
     setTimeout(() => {
       this.addForm = this.formBuilder.group({
@@ -61,7 +63,8 @@ export class MasterUserComponent implements OnInit {
     private restApiService: ApiServiceService,
     private modalService: NgbModal,
     private formBuilder: UntypedFormBuilder,
-    private router: Router
+    private router: Router,
+    private titleService: Title
   ) {}
 
   get af() {
@@ -93,11 +96,22 @@ export class MasterUserComponent implements OnInit {
       if (result.isConfirmed) {
         this.restApiService.deleteUser(id).subscribe({
           next: () => {
-            Swal.fire('Deleted!', 'User has been deleted.', 'success');
-            this.getEmployees();
+            Swal.fire({
+              title: 'Deleted!',
+              text: 'User has been deleted.',
+              icon: 'success',
+              confirmButtonColor: '#3085d6',
+            }).then(() => {
+              this.getEmployees();
+            });
           },
           error: (error) => {
-            Swal.fire('Error!', 'Failed to delete user.', 'error');
+            Swal.fire({
+              title: 'Error!',
+              text: 'Failed to delete user.',
+              icon: 'error',
+              confirmButtonColor: '#3085d6',
+            });
             console.error('Error deleting user:', error);
           },
         });
@@ -114,11 +128,21 @@ export class MasterUserComponent implements OnInit {
       this.restApiService.createData(formData).subscribe({
         next: () => {
           this.modalService.dismissAll();
-          Swal.fire('Success!', 'User added successfully.', 'success');
+          Swal.fire({
+            title: 'Success!',
+            text: 'User added successfully.',
+            icon: 'success',
+            confirmButtonColor: '#3085d6',
+          });
           this.ngOnInit();
         },
         error: (error) => {
-          Swal.fire('Error!', 'Failed to add user.', 'error');
+          Swal.fire({
+            title: 'Error!',
+            text: 'Failed to add user.',
+            icon: 'error',
+            confirmButtonColor: '#3085d6',
+          });
           console.error('Error submitting data:', error);
         },
       });

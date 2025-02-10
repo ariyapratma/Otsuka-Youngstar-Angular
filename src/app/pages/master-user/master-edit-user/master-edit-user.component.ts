@@ -66,16 +66,22 @@ export class MasterEditUserComponent implements OnInit {
             .updateUser(this.userId, this.editForm.value)
             .subscribe({
               next: () => {
-                Swal.fire(
-                  'Success!',
-                  'User updated successfully.',
-                  'success'
-                ).then(() => {
+                Swal.fire({
+                  title: 'Success!',
+                  text: 'User updated successfully.',
+                  icon: 'success',
+                  confirmButtonColor: '#3085d6',
+                }).then(() => {
                   this.router.navigate(['/pages/master-user']);
                 });
               },
               error: (error) => {
-                Swal.fire('Error!', 'Failed to update user.', 'error');
+                Swal.fire({
+                  title: 'Error!',
+                  text: 'Failed to update user.',
+                  icon: 'error',
+                  confirmButtonColor: '#3085d6',
+                });
                 console.error('Error updating user:', error);
               },
             });

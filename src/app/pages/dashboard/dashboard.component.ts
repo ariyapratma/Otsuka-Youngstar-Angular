@@ -7,6 +7,7 @@ import {
   ApexDataLabels,
   ApexYAxis,
 } from 'ng-apexcharts';
+import { Title } from '@angular/platform-browser';
 
 export interface User {
   id: number;
@@ -34,10 +35,14 @@ export class DashboardComponent implements OnInit {
   userData: User[] = [];
   chartOptions!: ApexchartInterface;
 
-  constructor(private restApiService: ApiServiceService) {}
+  constructor(
+    private restApiService: ApiServiceService,
+    private titleService: Title
+  ) {}
 
   ngOnInit(): void {
     this.getEmployees();
+    this.titleService.setTitle('Otsuka Youngstar - Dashboard');
   }
 
   private getEmployees() {
