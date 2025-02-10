@@ -1,1 +1,11 @@
-<p>dashboard works!</p>
+<div class="container mt-4 mb-4">
+  <h2 class="section-title">Dashboard User Data</h2>
+  <apx-chart
+    *ngIf="chartOptions"
+    [series]="chartOptions.series"
+    [chart]="chartOptions.chart"
+    [xaxis]="chartOptions.xaxis"
+    [dataLabels]="chartOptions.dataLabels"
+    [yaxis]="chartOptions.yaxis"
+  ></apx-chart>
+</div>
