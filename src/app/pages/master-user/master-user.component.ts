@@ -8,6 +8,7 @@ import {
 } from '@angular/forms';
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
+import { ApexAxisChartSeries, ApexChart, ApexXAxis, ApexDataLabels, ApexYAxis } from 'ng-apexcharts';
 
 export interface User {
   id: number;
@@ -15,6 +16,17 @@ export interface User {
   category_id: number;
   description: string;
   progress: number;
+}
+
+export interface ApexchartInterface {
+  series: ApexAxisChartSeries;
+  chart: ApexChart;
+  xaxis: ApexXAxis;
+  dataLabels: ApexDataLabels;
+  yaxis: ApexYAxis;
+  plotOptions?: any;
+  fill?: any;
+  states?: any;
 }
 
 @Component({
@@ -35,6 +47,30 @@ export class MasterUserComponent implements OnInit {
     'progress',
   ];
 
+  chartOptions: ApexchartInterface = {
+    series: [
+      {
+        name: "Sales",
+        data: [10, 41, 35, 51, 49, 62, 69, 91, 148]
+      }
+    ],
+    chart: {
+      type: "line",
+      height: 350
+    },
+    xaxis: {
+      categories: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep"]
+    },
+    dataLabels: {
+      enabled: false
+    },
+    yaxis: {
+      title: {
+        text: "Revenue ($)"
+      }
+    }
+  };
+  
   ngOnInit(): void {
     this.getEmployees();
     this.getCategories();
