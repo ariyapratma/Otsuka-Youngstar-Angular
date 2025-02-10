@@ -10,10 +10,12 @@
       <h5 class="modal-title">Add Data</h5>
       <button
         type="button"
-        class="btn-close btn-close-white px-4 py-2"
+        class="btn-close-custom"
         (click)="modal.dismiss()"
         aria-label="Close"
-      ></button>
+      >
+        <i class="bi bi-x-lg"></i>
+      </button>
     </div>
     <div class="modal-body bg-white p-4">
       <!-- Form masuk ke dalam bagian "FORM DATA" -->
@@ -92,15 +94,8 @@
             Progress is required
           </div>
         </div>
-        <div class="d-flex justify-content-between mt-4">
-          <button
-            type="button"
-            class="btn btn-secondary px-4 py-2 rounded-top"
-            (click)="modal.dismiss()"
-          >
-            Close
-          </button>
-          <button type="submit" class="btn btn-primary px-4 py-2 rounded-top">
+        <div class="d-grid gap-2 mt-4">
+          <button type="submit" class="btn btn-primary btn-sm w-100">
             Submit
           </button>
         </div>
