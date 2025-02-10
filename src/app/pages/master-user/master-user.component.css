@@ -28,7 +28,7 @@ body {
   background-color: #0d6efd;
   border: none;
   color: white;
-  
+  margin-bottom: 16px;
 }
 
 .btn-primary:hover {
@@ -109,11 +109,14 @@ body {
   border-radius: 10px;
   overflow: hidden;
   background-color: #ffffff;
+  font-size: 0.9rem;
+  color: #6c757d;
 }
 
 .table th {
   background-color: #f1f3f5;
-  font-weight: 600;
+  font-size: 0.9rem;
+  color: #6c757d;
 }
 
 .table-striped tbody tr:nth-of-type(odd) {

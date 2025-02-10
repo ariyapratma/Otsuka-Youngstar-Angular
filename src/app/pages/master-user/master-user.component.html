@@ -1,7 +1,7 @@
 <div class="container mt-4 mb-4">
   <!-- Add Data Button -->
-  <button class="btn btn-primary btn-icon" (click)="addButton(modalAdd)">
-    <i class="bi bi-plus-lg"></i>
+  <button class="btn btn-primary" (click)="addButton(modalAdd)">
+    Add Data
   </button>
 
   <!-- Modal Template for Add Data -->
@@ -10,7 +10,7 @@
       <h5 class="modal-title">Add Data</h5>
       <button
         type="button"
-        class="btn-close btn-close-white"
+        class="btn-close btn-close-white px-4 py-2"
         (click)="modal.dismiss()"
         aria-label="Close"
       ></button>
@@ -111,12 +111,13 @@
   <!-- Table Section -->
   <div class="card shadow-sm p-4 rounded">
     <h2 class="h4 mb-4">User Data</h2>
-    <apx-chart 
-    [series]="chartOptions.series"
-    [chart]="chartOptions.chart"
-    [xaxis]="chartOptions.xaxis"
-    [dataLabels]="chartOptions.dataLabels"
-    [yaxis]="chartOptions.yaxis">
+    <apx-chart
+      [series]="chartOptions.series"
+      [chart]="chartOptions.chart"
+      [xaxis]="chartOptions.xaxis"
+      [dataLabels]="chartOptions.dataLabels"
+      [yaxis]="chartOptions.yaxis"
+    >
     </apx-chart>
     <table class="table table-striped table-hover">
       <thead>
@@ -157,13 +158,13 @@
           </td>
           <td>
             <button
-              class="btn btn-warning btn-icon me-2"
+              class="btn btn-outline-warning btn-icon me-2"
               (click)="editButton(element.id)"
             >
               <i class="bi bi-pencil"></i>
             </button>
             <button
-              class="btn btn-danger btn-icon"
+              class="btn btn-outline-danger btn-icon"
               (click)="onDeleteUser(element.id)"
             >
               <i class="bi bi-trash"></i>
